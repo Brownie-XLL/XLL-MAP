@@ -136,7 +136,7 @@ Papa.parse(csvUrl, {
   complete: function(results) {
     const rows = results.data;
 
-    rows.forEach(function(row) {
+    rows.forEach(function(row, index) {
       const lat = parseFloat(row["Latitude"] || row["LAT"] || row["lat"]);
       const lng = parseFloat(row["Longitude"] || row["LONG"] || row["lng"] || row["lon"]);
 
@@ -181,27 +181,41 @@ Papa.parse(csvUrl, {
             </div>
 
             <div style="padding: 0 2px 6px 2px;">
-              <div style="
-                background: #111;
-                border: 1px solid #333;
-                border-radius: 6px;
-                padding: 10px 12px;
-                margin-bottom: 12px;
-                text-align: center;
-              ">
-                <div style="
-                  font-size: 24px;
-                  font-weight: 800;
-                  font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif;
-                  letter-spacing: 0.5px;
-                  color: #00ff66;
-                  margin-bottom: 3px;
-                  text-transform: uppercase;
-                ">${name}</div>
-                <div style="color: #ccc; font-size: 13px; font-weight: 600;">
-                  ${city}, ${state}
-                </div>
-              </div>
+<!-- Name & Location + Badge -->
+<div style="
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+">
+  <!-- Name + City (left/center) -->
+  <div style="text-align: center; flex-grow: 1;">
+    <div style="
+      font-size: 24px;
+      font-weight: 800;
+      font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif;
+      letter-spacing: 0.5px;
+      color: #00ff66;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    ">${name}</div>
+    <div style="color: #ccc; font-size: 13px; font-weight: 600;">
+      ${city}, ${state}
+    </div>
+  </div>
+
+  <!-- OG Spartan Badge (right side) - only for first 10 -->
+  ${index < 10 ? `
+    <img src="og-spartan-badge.png" 
+         style="width: 70px; height: 70px; border-radius: 50%; flex-shrink: 0;" 
+         alt="OG Spartan">
+  ` : ''}
+</div>
 
               <div style="font-size: 13px; line-height: 1.6;">
                 <div style="margin-bottom: 6px;"><strong>Contact:</strong> ${linkify(contact)}</div>
