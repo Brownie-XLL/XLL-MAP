@@ -7,9 +7,9 @@
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
   <style>
     body {
       margin: 0;
@@ -28,32 +28,33 @@
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  // Turn URLs and Discord links into clickable links
-function linkify(text) {
-  if (!text) return "";
-
-  // Convert full URLs (http/https)
-  let result = text.replace(/(https?:\/\/[^\s]+)/g, function(url) {
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
-  });
-
-  // Convert Discord invite links that start with discord.gg/
-  result = result.replace(/(discord\.gg\/[^\s]+)/gi, function(invite) {
-    return `<a href="https://${invite}" target="_blank" rel="noopener noreferrer">${invite}</a>`;
-  });
-
-  return result;
-}
-  <!-- PapaParse for easy CSV reading -->
-
+  <!-- PapaParse -->
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <!-- MarkerCluster -->
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
   <script>
+    // Turn URLs and Discord links into clickable links
+    function linkify(text) {
+      if (!text) return "";
+
+      // Convert full URLs (http/https)
+      let result = text.replace(/(https?:\/\/[^\s]+)/g, function(url) {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+      });
+
+      // Convert Discord invite links (discord.gg/...)
+      result = result.replace(/(discord\.gg\/[^\s]+)/gi, function(invite) {
+        return `<a href="https://${invite}" target="_blank" rel="noopener noreferrer">${invite}</a>`;
+      });
+
+      return result;
+    }
+
     // Your published Google Sheet CSV link
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQikAzD4Lthad2bFE3Y4TAsShUeWwOqk_jDKK9D6wSFl4_SJsKpeSWs7hdPJBFbKfM2JhTfF30UZLf5/pub?gid=0&single=true&output=csv";
 
-    // Create the map (centered on Ohio for now)
+    // Create the map
     const map = L.map('map').setView([39.96, -82.99], 7);
     const markers = L.markerClusterGroup();
 
@@ -73,103 +74,19 @@ function linkify(text) {
         rows.forEach(function(row) {
           const lat = parseFloat(row["Latitude"] || row["LAT"] || row["lat"]);
           const lng = parseFloat(row["Longitude"] || row["LONG"] || row["lng"] || row["lon"]);
-          map.addLayer(markers);
 
           // Only add marker if we have valid coordinates
           if (!isNaN(lat) && !isNaN(lng)) {
-const name = row["Group/Organizer Name"] || "Unknown";
-const city = row["City"] || "";
-const state = row["State"] || "";
-const contact = row["Primary Contact"] || "";
-const platforms = row["Platforms"] || "";
-const games = row["Games"] || "";
-const notes = row["Notes"] || "";
-const visibility = row["Public or Private"] || "";
+            const name = row["Group/Organizer Name"] || "Unknown";
+            const city = row["City"] || "";
+            const state = row["State"] || "";
+            const contact = row["Primary Contact"] || "";
+            const platforms = row["Platforms"] || "";
+            const games = row["Games"] || "";
+            const notes = row["Notes"] || "";
+            const visibility = row["Public or Private"] || "";
+
             const marker = L.marker([lat, lng]);
-markers.addLayer(marker);
+            markers.addLayer(marker);
 
-marker.bindPopup(`
-  <div style="font-family: Arial, sans-serif; min-width: 220px;">
-
-    <!-- Banner -->
-    <div style="
-      background: #0a0a0a;
-      color: #00ff66;
-      padding: 10px 12px;
-      margin: -14px -14px 12px -14px;
-      border-radius: 8px 8px 0 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 2px solid #00ff66;
-    ">
-      <img src="xll-icon.png" style="width:64px; height:64px; border-radius:6px; flex-shrink:0;">
-      <div style="font-size: 14px; font-weight: 700; letter-spacing: 0.3px; line-height: 1.2;">
-        XBOX LAN<br>LEGENDS MAP
-      </div>
-    </div>
-
-    <!-- Content -->
-    <div style="padding: 0 2px 6px 2px;">
-      
-<!-- Name & Location (boxed + centered) -->
-<div style="
-  background: #111;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
-  text-align: center;
-">
-  <div style="
-    font-size: 24px;
-    font-weight: 800;
-    font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif;
-    letter-spacing: 0.5px;
-    color: #00ff66;
-    margin-bottom: 3px;
-    text-transform: uppercase;
-  ">${name}</div>
-
-  <div style="
-    color: #ccc;
-    font-size: 13px;
-    font-weight: 600;
-  ">${city}, ${state}</div>
-</div>
-
-      <!-- Details -->
-      <div style="font-size: 13px; line-height: 1.6;">
-        <div style="margin-bottom: 6px;"><strong>Contact:</strong> ${linkify(contact)}</div>
-        <div style="margin-bottom: 6px;">
-          <strong>Access:</strong>
-          <span style="font-weight:700; color: ${
-            visibility.toLowerCase().includes('private') ? '#e74c3c' :
-            visibility.toLowerCase().includes('semi') ? '#e67e22' :
-            '#27ae60'
-          };">
-            ${visibility || 'Not specified'}
-          </span>
-        </div>
-        <div style="margin-bottom: 6px;"><strong>Platforms:</strong> ${platforms}</div>
-        <div style="margin-bottom: 6px;"><strong>Games:</strong> ${games}</div>
-        <div><strong>Notes:</strong> ${linkify(notes)}</div>
-      </div>
-    </div>
-
-  </div>
-`, { maxWidth: 300 });
-          }
-        });
-
-        console.log("Loaded " + rows.length + " rows from the sheet");
-      },
-      error: function(err) {
-        console.error("Error loading CSV:", err);
-        alert("Could not load the organizer data. Check the published CSV link.");
-      }
-    });
-  </script>
-
-</body>
-</html>
+            marker.bindPopup
