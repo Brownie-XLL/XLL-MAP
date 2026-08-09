@@ -55,7 +55,7 @@
 
           // Only add marker if we have valid coordinates
           if (!isNaN(lat) && !isNaN(lng)) {
-            const name = row["Name"] || row["Group / Organizer Name"] || "Unknown";
+           const name = row["Group/Organizer Name"] || "Unknown";
             const city = row["City"] || "";
             const state = row["State"] || "";
             const contact = row["Contact"] || row["Primary Contact"] || "";
