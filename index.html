@@ -95,25 +95,29 @@ marker.bindPopup(`
     <!-- Content -->
     <div style="padding: 0 2px 6px 2px;">
       
-      <!-- Name & Location (right-aligned) -->
+      <!-- Name & Location (boxed + right-aligned) -->
       <div style="
-        font-size: 20px;
-        font-weight: 700;
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        letter-spacing: -0.3px;
-        margin-bottom: 2px;
-        color: #111;
+        background: #f7f7f7;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 8px 10px;
+        margin-bottom: 12px;
         text-align: right;
-      ">${name}</div>
+      ">
+        <div style="
+          font-size: 20px;
+          font-weight: 700;
+          font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+          letter-spacing: -0.3px;
+          color: #111;
+          margin-bottom: 2px;
+        ">${name}</div>
 
-      <div style="
-        color: #555;
-        font-size: 13px;
-        margin-bottom: 10px;
-        text-align: right;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #ddd;
-      ">${city}, ${state}</div>
+        <div style="
+          color: #555;
+          font-size: 13px;
+        ">${city}, ${state}</div>
+      </div>
 
       <!-- Details -->
       <div style="font-size: 13px; line-height: 1.6;">
