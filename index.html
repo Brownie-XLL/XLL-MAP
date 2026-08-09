@@ -29,13 +29,21 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <!-- PapaParse for easy CSV reading -->
-  // Turn URLs in text into clickable links
+// Turn URLs and Discord links into clickable links
 function linkify(text) {
   if (!text) return "";
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, function(url) {
+
+  // Convert full URLs (http/https)
+  let result = text.replace(/(https?:\/\/[^\s]+)/g, function(url) {
     return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
   });
+
+  // Convert Discord invite links that start with discord.gg/
+  result = result.replace(/(discord\.gg\/[^\s]+)/gi, function(invite) {
+    return `<a href="https://${invite}" target="_blank" rel="noopener noreferrer">${invite}</a>`;
+  });
+
+  return result;
 }
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
@@ -131,7 +139,7 @@ marker.bindPopup(`
 
       <!-- Details -->
       <div style="font-size: 13px; line-height: 1.6;">
-        <div style="margin-bottom: 6px;"><strong>Contact:</strong> ${contact}</div>
+        <div style="margin-bottom: 6px;"><strong>Contact:</strong> ${linkify(contact)}</div>
         <div style="margin-bottom: 6px;">
           <strong>Access:</strong>
           <span style="font-weight:700; color: ${
