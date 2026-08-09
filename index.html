@@ -56,7 +56,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // ===== SEARCH BOX =====
-const searchControl = L.control({ position: 'topleft' });
+const searchControl = L.control({ position: 'bottomleft' });
 
 searchControl.onAdd = function () {
   const div = L.DomUtil.create('div', 'search-box');
@@ -77,15 +77,33 @@ searchControl.onAdd = function () {
 searchControl.addTo(map);
 
 // Search function
+// Full state name mapping
+const stateNames = {
+  "al": "alabama", "ak": "alaska", "az": "arizona", "ar": "arkansas", "ca": "california",
+  "co": "colorado", "ct": "connecticut", "de": "delaware", "fl": "florida", "ga": "georgia",
+  "hi": "hawaii", "id": "idaho", "il": "illinois", "in": "indiana", "ia": "iowa",
+  "ks": "kansas", "ky": "kentucky", "la": "louisiana", "me": "maine", "md": "maryland",
+  "ma": "massachusetts", "mi": "michigan", "mn": "minnesota", "ms": "mississippi", "mo": "missouri",
+  "mt": "montana", "ne": "nebraska", "nv": "nevada", "nh": "new hampshire", "nj": "new jersey",
+  "nm": "new mexico", "ny": "new york", "nc": "north carolina", "nd": "north dakota", "oh": "ohio",
+  "ok": "oklahoma", "or": "oregon", "pa": "pennsylvania", "ri": "rhode island", "sc": "south carolina",
+  "sd": "south dakota", "tn": "tennessee", "tx": "texas", "ut": "utah", "vt": "vermont",
+  "va": "virginia", "wa": "washington", "wv": "west virginia", "wi": "wisconsin", "wy": "wyoming"
+};
+
 function runSearch() {
   const query = document.getElementById('searchInput').value.trim().toLowerCase();
   if (!query) return;
 
   const matches = allMarkers.filter(item => {
+    const stateAbbr = item.state.toLowerCase();
+    const fullStateName = stateNames[stateAbbr] || "";
+
     return (
       item.name.toLowerCase().includes(query) ||
       item.city.toLowerCase().includes(query) ||
-      item.state.toLowerCase().includes(query)
+      stateAbbr.includes(query) ||
+      fullStateName.includes(query)
     );
   });
 
@@ -95,11 +113,9 @@ function runSearch() {
   }
 
   if (matches.length === 1) {
-    // Fly to single match
     map.flyTo(matches[0].marker.getLatLng(), 10);
     matches[0].marker.openPopup();
   } else {
-    // Fit map to show all matches
     const group = L.featureGroup(matches.map(m => m.marker));
     map.fitBounds(group.getBounds().pad(0.2));
   }
