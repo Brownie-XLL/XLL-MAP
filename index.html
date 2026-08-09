@@ -72,14 +72,22 @@ const visibility = row["Public or Private"] || "";
 markers.addLayer(marker);
 
             marker.bindPopup(`
-              <div style="
-  font-size: 21px;
-  font-weight: 800;
+<div style="
+  font-size: 20px;
+  font-weight: 700;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   letter-spacing: -0.3px;
   margin-bottom: 3px;
   color: #111;
+  text-align: right;
 ">${name}</div>
+
+<div style="
+  color: #555;
+  font-size: 13px;
+  margin-bottom: 12px;
+  text-align: right;
+">${city}, ${state}</div>
                 
                 <!-- Banner -->
                 <div style="
