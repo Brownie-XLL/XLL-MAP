@@ -59,7 +59,7 @@
             const city = row["City"] || "";
             const state = row["State"] || "";
             const contact = row["Contact"] || row["Primary Contact"] || "";
-            const platforms = row["Platforms & Games"] || row["Platforms"] || "";
+const platforms = row["Platforms/Games"] || "";
             const notes = row["Notes"] || "";
 
             const marker = L.marker([lat, lng]).addTo(map);
