@@ -7,7 +7,9 @@
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  
   <style>
     body {
       margin: 0;
@@ -28,6 +30,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <!-- PapaParse for easy CSV reading -->
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
   <script>
     // Your published Google Sheet CSV link
@@ -35,6 +38,7 @@
 
     // Create the map (centered on Ohio for now)
     const map = L.map('map').setView([39.96, -82.99], 7);
+    const markers = L.markerClusterGroup();
 
     // Add map tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -52,6 +56,7 @@
         rows.forEach(function(row) {
           const lat = parseFloat(row["Latitude"] || row["LAT"] || row["lat"]);
           const lng = parseFloat(row["Longitude"] || row["LONG"] || row["lng"] || row["lon"]);
+          map.addLayer(markers);
 
           // Only add marker if we have valid coordinates
           if (!isNaN(lat) && !isNaN(lng)) {
@@ -62,7 +67,8 @@
             const platforms = row["Platforms/Games"] || "";
             const notes = row["Notes"] || "";
             const visibility = row["Public or Private"] || "";
-            const marker = L.marker([lat, lng]).addTo(map);
+            const marker = L.marker([lat, lng]);
+markers.addLayer(marker);
 
             marker.bindPopup(`
               <div style="font-family: Arial, sans-serif; min-width: 220px;">
