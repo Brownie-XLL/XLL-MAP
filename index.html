@@ -71,67 +71,69 @@ const visibility = row["Public or Private"] || "";
             const marker = L.marker([lat, lng]);
 markers.addLayer(marker);
 
-            marker.bindPopup(`
-<div style="
-  font-size: 20px;
-  font-weight: 700;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  letter-spacing: -0.3px;
-  margin-bottom: 3px;
-  color: #111;
-  text-align: right;
-">${name}</div>
+marker.bindPopup(`
+  <div style="font-family: Arial, sans-serif; min-width: 220px;">
 
-<div style="
-  color: #555;
-  font-size: 13px;
-  margin-bottom: 12px;
-  text-align: right;
-">${city}, ${state}</div>
-                
-                <!-- Banner -->
-                <div style="
-                  background: #0a0a0a;
-                  color: #00ff66;
-                  padding: 10px 12px;
-                  margin: -14px -14px 12px -14px;
-                  border-radius: 8px 8px 0 0;
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
-                  border-bottom: 2px solid #00ff66;
-                ">
-                  <img src="xll-icon.png" style="width:64px; height:64px; border-radius:6px; flex-shrink:0;">
-                  <div style="font-size: 14px; font-weight: 700; letter-spacing: 0.3px; line-height: 1.2;">
-                    XBOX LAN<br>LEGENDS MAP
-                  </div>
-                </div>
-
-<!-- Content -->
-<div style="padding: 0 2px 6px 2px;">
-  <div style="font-size: 17px; font-weight: 700; margin-bottom: 2px;">${name}</div>
-  <div style="color: #555; font-size: 13px; margin-bottom: 12px;">${city}, ${state}</div>
-
-  <div style="font-size: 13px; line-height: 1.6;">
-    <div style="margin-bottom: 6px;"><strong>Contact:</strong> ${contact}</div>
-    <div style="margin-bottom: 6px;">
-      <strong>Access:</strong> 
-      <span style="font-weight:700; color: ${
-        visibility.toLowerCase().includes('private') ? '#e74c3c' :
-        visibility.toLowerCase().includes('semi') ? '#e67e22' :
-        '#27ae60'
-      };">
-        ${visibility || 'Not specified'}
-      </span>
+    <!-- Banner -->
+    <div style="
+      background: #0a0a0a;
+      color: #00ff66;
+      padding: 10px 12px;
+      margin: -14px -14px 12px -14px;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid #00ff66;
+    ">
+      <img src="xll-icon.png" style="width:64px; height:64px; border-radius:6px; flex-shrink:0;">
+      <div style="font-size: 14px; font-weight: 700; letter-spacing: 0.3px; line-height: 1.2;">
+        XBOX LAN<br>LEGENDS MAP
+      </div>
     </div>
-    <div style="margin-bottom: 6px;"><strong>Platforms:</strong> ${platforms}</div>
-    <div style="margin-bottom: 6px;"><strong>Games:</strong> ${games}</div>
-    <div><strong>Notes:</strong> ${notes}</div>
-  </div>
-</div>
 
-              </div>
-            `, { maxWidth: 300 });
+    <!-- Content -->
+    <div style="padding: 0 2px 6px 2px;">
+      
+      <!-- Name & Location (right-aligned) -->
+      <div style="
+        font-size: 20px;
+        font-weight: 700;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        letter-spacing: -0.3px;
+        margin-bottom: 3px;
+        color: #111;
+        text-align: right;
+      ">${name}</div>
+
+      <div style="
+        color: #555;
+        font-size: 13px;
+        margin-bottom: 12px;
+        text-align: right;
+      ">${city}, ${state}</div>
+
+      <!-- Details -->
+      <div style="font-size: 13px; line-height: 1.6;">
+        <div style="margin-bottom: 6px;"><strong>Contact:</strong> ${contact}</div>
+        <div style="margin-bottom: 6px;">
+          <strong>Access:</strong>
+          <span style="font-weight:700; color: ${
+            visibility.toLowerCase().includes('private') ? '#e74c3c' :
+            visibility.toLowerCase().includes('semi') ? '#e67e22' :
+            '#27ae60'
+          };">
+            ${visibility || 'Not specified'}
+          </span>
+        </div>
+        <div style="margin-bottom: 6px;"><strong>Platforms:</strong> ${platforms}</div>
+        <div style="margin-bottom: 6px;"><strong>Games:</strong> ${games}</div>
+        <div><strong>Notes:</strong> ${notes}</div>
+      </div>
+    </div>
+
+  </div>
+`, { maxWidth: 300 });
           }
         });
 
