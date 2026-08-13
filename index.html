@@ -36,20 +36,10 @@
 function linkify(text) {
   if (!text) return "";
 
-  // 1. Remove any existing <a> tags so we start clean
-  let clean = text.replace(/<a\s+[^>]*>(.*?)<\/a>/gi, "$1");
-
-  // 2. Convert full http/https URLs
-  clean = clean.replace(/(https?:\/\/[^\s<]+)/g, function(url) {
+  // Only convert full http/https URLs (this is the safest method)
+  return text.replace(/(https?:\/\/[^\s]+)/g, function(url) {
     return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
   });
-
-  // 3. Convert bare discord.gg links
-  clean = clean.replace(/(^|[^">])(discord\.gg\/[^\s<]+)/gi, function(match, before, invite) {
-    return `${before}<a href="https://${invite}" target="_blank" rel="noopener noreferrer">${invite}</a>`;
-  });
-
-  return clean;
 }
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQikAzD4Lthad2bFE3Y4TAsShUeWwOqk_jDKK9D6wSFl4_SJsKpeSWs7hdPJBFbKfM2JhTfF30UZLf5/pub?gid=0&single=true&output=csv";
 
